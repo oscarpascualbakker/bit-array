@@ -1,0 +1,17 @@
+{
+    "name": "oscarpb/bitarray",
+    "description": "A super-fast bit array in PHP",
+    "autoload": {
+        "psr-4": {
+            "Oscarpb\\Bitarray\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oscar Pascual"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
