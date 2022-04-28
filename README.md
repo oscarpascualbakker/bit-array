@@ -92,3 +92,7 @@ $bitarray3->fillFromString($bitarray->print());
 
 See the [examples](https://github.com/oscarpascualbakker/bit-array/tree/master/examples) folder for more information.
 
+
+License
+--------
+This package is distributed under the MIT license.
