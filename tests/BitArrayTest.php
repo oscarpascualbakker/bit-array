@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Oscarpb\Bitarray\BitArray;
 use Oscarpb\Bitarray\LimitExceededException;
 use Oscarpb\Bitarray\DifferentSizeException;
-
+use Oscarpb\Bitarray\NotAllowedCharactersException;
 
 class BitArrayTest extends TestCase
 {
@@ -156,7 +156,6 @@ class BitArrayTest extends TestCase
 
 
     /**
-     * @covers \Oscarpb\Bitarray\DifferentSizeException
      * @covers \Oscarpb\Bitarray\Bitarray::setBit
      * @covers \Oscarpb\Bitarray\Bitarray::getBit
      * @covers \Oscarpb\Bitarray\Bitarray::or
@@ -191,7 +190,6 @@ class BitArrayTest extends TestCase
 
 
     /**
-     * @covers \Oscarpb\Bitarray\DifferentSizeException
      * @covers \Oscarpb\Bitarray\Bitarray::setBit
      * @covers \Oscarpb\Bitarray\Bitarray::getBit
      * @covers \Oscarpb\Bitarray\Bitarray::and
@@ -225,7 +223,6 @@ class BitArrayTest extends TestCase
 
 
     /**
-     * @covers \Oscarpb\Bitarray\DifferentSizeException
      * @covers \Oscarpb\Bitarray\Bitarray::setBit
      * @covers \Oscarpb\Bitarray\Bitarray::getBit
      * @covers \Oscarpb\Bitarray\Bitarray::xor
@@ -259,7 +256,6 @@ class BitArrayTest extends TestCase
 
 
     /**
-     * @covers \Oscarpb\Bitarray\DifferentSizeException
      * @covers \Oscarpb\Bitarray\Bitarray::setBit
      * @covers \Oscarpb\Bitarray\Bitarray::getBit
      * @covers \Oscarpb\Bitarray\Bitarray::not
@@ -283,6 +279,64 @@ class BitArrayTest extends TestCase
         $this->assertTrue($bitarray->getBit(3));
         $this->assertTrue($bitarray->getBit(5));
         $this->assertTrue($bitarray->getBit(7));
+    }
+
+
+    /**
+     * @covers \Oscarpb\Bitarray\Bitarray::getBit
+     * @covers \Oscarpb\Bitarray\Bitarray::createFromString
+     */
+    public function test_create_bitarray_from_string()
+    {
+        $string = '00110101110001100010';
+
+        $bitarray = new BitArray(strlen($string));
+        $bitarray->fillFromString($string);
+
+        $this->assertFalse($bitarray->getBit(0));
+        $this->assertFalse($bitarray->getBit(2));
+        $this->assertFalse($bitarray->getBit(3));
+        $this->assertFalse($bitarray->getBit(4));
+        $this->assertFalse($bitarray->getBit(7));
+        $this->assertFalse($bitarray->getBit(8));
+        $this->assertFalse($bitarray->getBit(9));
+        $this->assertFalse($bitarray->getBit(13));
+        $this->assertFalse($bitarray->getBit(15));
+        $this->assertFalse($bitarray->getBit(18));
+        $this->assertFalse($bitarray->getBit(19));
+
+        $this->assertTrue($bitarray->getBit(1));
+        $this->assertTrue($bitarray->getBit(5));
+        $this->assertTrue($bitarray->getBit(6));
+        $this->assertTrue($bitarray->getBit(10));
+        $this->assertTrue($bitarray->getBit(11));
+        $this->assertTrue($bitarray->getBit(12));
+        $this->assertTrue($bitarray->getBit(14));
+        $this->assertTrue($bitarray->getBit(16));
+        $this->assertTrue($bitarray->getBit(17));
+    }
+
+
+    /**
+     * @covers \Oscarpb\Bitarray\Bitarray::createFromString
+     * @covers \Oscarpb\Bitarray\NotAllowedCharactersException
+     */
+    public function test_create_bitarray_with_strange_characters()
+    {
+        $string = '0010.110';
+        $this->expectException(NotAllowedCharactersException::class);
+        $bitarray = new BitArray(strlen($string));
+        $bitarray->fillFromString($string);
+
+        $string = '00101102';
+        $this->expectException(NotAllowedCharactersException::class);
+        $bitarray = new BitArray(strlen($string));
+        $bitarray->fillFromString($string);
+
+        $string = 'a00101101';
+        $this->expectException(NotAllowedCharactersException::class);
+        $bitarray = new BitArray(strlen($string));
+        $bitarray->fillFromString($string);
     }
 
 

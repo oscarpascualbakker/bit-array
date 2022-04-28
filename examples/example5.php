@@ -14,11 +14,11 @@ $bitarray->setBit(4);
 $bitarray->setBit(6);
 
 echo "Bit array print: ";
-$bitarray->print();
+echo $bitarray->print();
 echo "<br><br>";
 
 $bitarray->not();
 
 echo "Bit array after NOT: ";
-$bitarray->print();
+echo $bitarray->print();
 echo "<br><br>";

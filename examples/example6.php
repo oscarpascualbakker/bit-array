@@ -19,7 +19,7 @@ $bitarray1->setBit(133);
 $bitarray1->setBit(147);
 
 echo "Bit array 1: ";
-$bitarray1->print();
+echo $bitarray1->print();
 echo "<br><br>";
 
 $bitarray2 = new BitArray(148);
@@ -37,11 +37,11 @@ $bitarray2->setBit(141);
 $bitarray2->setBit(143);
 
 echo "Bit array 2: ";
-$bitarray2->print();
+echo $bitarray2->print();
 echo "<br><br>";
 
 $bitarray1->or($bitarray2);
 
 echo "Bit array 1 after OR with bit array 2: ";
-$bitarray1->print();
+echo $bitarray1->print();
 echo "<br><br>";

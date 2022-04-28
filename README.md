@@ -6,12 +6,15 @@ PHP BitArray
 
 This project handles super-fast arrays of bits stored internally as integers.
 
-It is as simple as creating the bit array indicating its length, and you are not limited to one integer:
+It is as simple as creating the bit array indicating its length.  And you are not limited to one integer!
+
 ~~~
 $bitarray = new BitArray(2129);
 ~~~
 
 This package offers methods to get, set and unset bits, and the typical logical bitwise operators _and_, _or_, _xor_ and _not_ methods.
+
+You can also fill a bit array with a string where, obviously, only 0's and 1's are allowed.
 
 Installation
 ------------
@@ -19,7 +22,7 @@ Installation
 Using composer: either
 
 ~~~
-$ composer require oscarpb/bitarray:0.1.0
+$ composer require oscarpb/bitarray:0.2.0
 ~~~
 
 or create a `composer.json` file containing
@@ -27,16 +30,19 @@ or create a `composer.json` file containing
 ~~~json
 {
     "require": {
-        "oscarpb/bitarray": "0.1.0"
+        "oscarpb/bitarray": "0.2.0"
     }
 }
 ~~~
+
 and run
+
 ~~~
 $ composer install
 ~~~
 
 Create a `test.php` file containing
+
 ~~~php
 <?php
 require __DIR__ . '/vendor/autoload.php';
@@ -50,12 +56,15 @@ $bitarray->setBit(4);
 $bitarray->setBit(6);
 $bitarray->print();
 ~~~
+
 This should print:
+
 ~~~
 01010101
 ~~~
 
 Other options:
+
 ~~~php
 <?php
 require __DIR__ . '/vendor/autoload.php';
@@ -73,9 +82,12 @@ $bitarray->getBit(2);  // false (it has been unset)
 $bitarray2 = new BitArray(8);
 $bitarray2->setBit(7);
 $bitarray->not();
-$bitarray->and($b);
-$bitarray->or($b);
-$bitarray->xor($b);
+$bitarray->and($bitarray2);
+$bitarray->or($bitarray2);
+$bitarray->xor($bitarray2);
+
+$bitarray3 = new BitArray(8);
+$bitarray3->fillFromString($bitarray->print());
 ~~~
 
 See the [examples](https://github.com/oscarpascualbakker/bit-array/tree/master/examples) folder for more information.
