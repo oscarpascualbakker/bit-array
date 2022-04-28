@@ -257,35 +257,85 @@ class BitArray
 
 
     /**
-     * Print the complete bitarray in a fancy way
+     * This method fills a bitarray with a string representing the array.
+     * Only 0's and 1's are accepted values.
      *
+     * @param string $string
      * @return void
      */
-    public function print()
+    public function fillFromString($string)
     {
-        echo strrev(implode(' ', str_split(strrev(str_pad(decbin($this->array[$this->arrayLength-1]), $this->usedBitsInLastInteger, "0", STR_PAD_LEFT)), 8)));
-        echo ' ';
-        for($i = $this->arrayLength-2; $i >= 0; $i--) {
-            echo implode(' ', str_split(str_pad(decbin($this->array[$i]), 64, "0", STR_PAD_LEFT), 8));
-            echo ' ';
+        // Sanitize input string
+        $clean_string = strrev(preg_replace('/\s+/', '', $string));
+        $length       = strlen($clean_string);
+
+        // Ensure there are only 0's and 1's
+        if (preg_match('/[^0-1]/', $clean_string)) {
+            throw new NotAllowedCharactersException;
+        }
+
+        // Ensure current bit array is set to 0
+        for ($i = 0; $i < $this->arrayLength; $i++) {
+            $this->array[$i] = 0;
+        }
+
+        // Fill!
+        for ($i = 0; $i < $length; $i++) {
+            if ($clean_string[$i] == 1) {
+                $this->setBit($i);
+            }
         }
     }
 
 
     /**
-     * Print the different integers of the bitarray in a fancy way
+     * Return the complete bitarray as a string.
      *
-     * @return void
+     * @param bool $fancy Wether the output should be fancy or not
+     * @return string
      */
-    public function print_segments()
+    public function print($fancy = false)
     {
-        echo "Integer ".($this->arrayLength-1).": " . strrev(implode(' ', str_split(strrev(str_pad(decbin($this->array[$this->arrayLength-1]), $this->usedBitsInLastInteger, "0", STR_PAD_LEFT)), 8)));
-        echo "<br><br>";
+        $return    = '';
+        $separator = '';
+        if ($fancy) {
+            $separator = ' ';
+        }
+
+        $return  = strrev(implode($separator, str_split(strrev(str_pad(decbin($this->array[$this->arrayLength-1]), $this->usedBitsInLastInteger, "0", STR_PAD_LEFT)), 8)));
+        $return .= $separator;
+        for($i = $this->arrayLength-2; $i >= 0; $i--) {
+            $return .= implode($separator, str_split(str_pad(decbin($this->array[$i]), $this->size_of_integer_in_bits, "0", STR_PAD_LEFT), 8));
+            $return .= $separator;
+        }
+
+        return $return;
+    }
+
+
+    /**
+     * Return the different integers of the bitarray as a string
+     *
+     * @param bool $fancy Wether the output should be fancy or not
+     * @return string
+     */
+    public function print_segments($fancy = false)
+    {
+        $return    = '';
+        $separator = '';
+        if ($fancy) {
+            $separator = ' ';
+        }
+
+        $return  = "Integer ".($this->arrayLength-1).": " . strrev(implode($separator, str_split(strrev(str_pad(decbin($this->array[$this->arrayLength-1]), $this->usedBitsInLastInteger, "0", STR_PAD_LEFT)), 8)));
+        $return .= "<br><br>";
 
         for($i = $this->arrayLength-2; $i >= 0; $i--) {
-            echo "Integer $i: " . implode(' ', str_split(str_pad(decbin($this->array[$i]), 64, "0", STR_PAD_LEFT), 8));
-            echo "<br><br>";
+            $return .= "Integer $i: " . implode($separator, str_split(str_pad(decbin($this->array[$i]), $this->size_of_integer_in_bits, "0", STR_PAD_LEFT), 8));
+            $return .= "<br><br>";
         }
+
+        return $return;
     }
 
 

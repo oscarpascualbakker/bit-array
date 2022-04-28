@@ -31,5 +31,5 @@ echo "<br>";
 
 
 echo "Bit array print: ";
-$bitarray->print();
+echo $bitarray->print();
 echo "<br><br>";
